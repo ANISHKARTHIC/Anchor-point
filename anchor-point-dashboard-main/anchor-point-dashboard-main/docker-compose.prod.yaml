@@ -1,0 +1,12 @@
+version: "3.2"
+
+services:
+#anchorpoint frontend service
+  build-image-frontend:
+    build:
+      context: /
+      dockerfile: /var/lib/jenkins/workspace/Anchorpoint-Production/Frontend/prod.Dockerfile
+    image: 454073573537.dkr.ecr.ap-south-1.amazonaws.com/anchorpoint-prod-frontend
+    
+ 
+       

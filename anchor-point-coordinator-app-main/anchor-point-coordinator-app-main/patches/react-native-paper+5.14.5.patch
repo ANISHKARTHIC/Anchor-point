@@ -1,0 +1,26 @@
+diff --git a/node_modules/react-native-paper/lib/commonjs/components/MaterialCommunityIcon.js b/node_modules/react-native-paper/lib/commonjs/components/MaterialCommunityIcon.js
+index b6a88c3..803e4b8 100644
+--- a/node_modules/react-native-paper/lib/commonjs/components/MaterialCommunityIcon.js
++++ b/node_modules/react-native-paper/lib/commonjs/components/MaterialCommunityIcon.js
+@@ -25,7 +25,7 @@ const loadIconModule = () => {
+     return require('@react-native-vector-icons/material-design-icons').default;
+   } catch (e) {
+     try {
+-      return require('@expo/vector-icons/MaterialCommunityIcons').default;
++      return require('react-native-vector-icons/MaterialCommunityIcons').default;
+     } catch (e) {
+       try {
+         return require('react-native-vector-icons/MaterialCommunityIcons').default;
+diff --git a/node_modules/react-native-paper/lib/module/components/MaterialCommunityIcon.js b/node_modules/react-native-paper/lib/module/components/MaterialCommunityIcon.js
+index 472fee1..1962aef 100644
+--- a/node_modules/react-native-paper/lib/module/components/MaterialCommunityIcon.js
++++ b/node_modules/react-native-paper/lib/module/components/MaterialCommunityIcon.js
+@@ -18,7 +18,7 @@ const loadIconModule = () => {
+     return require('@react-native-vector-icons/material-design-icons').default;
+   } catch (e) {
+     try {
+-      return require('@expo/vector-icons/MaterialCommunityIcons').default;
++      return require('react-native-vector-icons/MaterialCommunityIcons').default;
+     } catch (e) {
+       try {
+         return require('react-native-vector-icons/MaterialCommunityIcons').default;

@@ -1,0 +1,32 @@
+@page {
+   margin: 0;
+}
+
+body {
+   margin: 0;
+   padding: 0;
+   --tw-bg-opacity: 1;
+   background-color: rgb(219 234 254 / var(--tw-bg-opacity));
+}
+
+.page-break-auto {
+   page-break-after: auto;
+}
+
+.page-break-before {
+   page-break-before: always;
+}
+
+.page-break-after {
+   page-break-after: always;
+}
+
+.page-break-before {
+   page-break-before: always;
+}
+
+.custom-width {
+   width: 35%;
+}
+
+ 

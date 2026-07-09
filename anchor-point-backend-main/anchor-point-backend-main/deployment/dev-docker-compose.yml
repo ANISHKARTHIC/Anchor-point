@@ -1,0 +1,21 @@
+#Docker-compose version
+version: "3.8"
+
+#Bakcend Service
+services:
+  anchorpoint-backend:
+    build:
+      context: /var/lib/jenkins/workspace/Anchorpoint-Development/Backend
+      dockerfile: /var/lib/jenkins/workspace/Anchorpoint-Development/Backend/deployment/dev.Dockerfile
+    image: anchorpoint-backend-image #Docker image name
+    container_name: anchorpoint-backend #Docker container name
+    ports:
+      - "8000:8000"
+
+    env_file: /home/ubuntu/anchorpoint_secrets/dev/anchorpoint-backend/dev.env
+
+#Network configuration
+networks:
+  default:
+    external:
+      name: anchorpoint

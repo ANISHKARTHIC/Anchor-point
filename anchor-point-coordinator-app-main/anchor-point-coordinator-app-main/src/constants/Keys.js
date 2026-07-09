@@ -1,0 +1,11 @@
+export default Keys = {
+  LOGGED_IN: 'LOGGED_IN',
+  ID: 'ID',
+  NAME: 'NAME',
+  TOKEN: 'TOKEN',
+  REFRESH_TOKEN: 'REFRESH_TOKEN',
+  PHONE: 'PHONE',
+  EMAIL: 'EMAIL',
+  AGREE_EULA:"AGREE_EULA",
+  EULA_STATUS:"AGREE"
+};

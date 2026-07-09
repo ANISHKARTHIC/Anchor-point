@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cab Booking Invoice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style> 
+    body {
+        font-family: "Open Sans", sans-serif;
+    }
+    td, p{
+            font-size: small;
+        }
+        
+    </style>
+</head>
+<body class="font-roboto">
+    <div class="max-w-4xl mx-auto bg-white p-4 md:p-8">
+        <div class="flex justify-between items-center mb-8">
+            <div class="flex items-center">
+                <img src="/app/src/templates/anchorpoint_logo.jpg" alt="Company Logo" class="h-28 w-28 mr-4">
+            </div>
+            <div class="text-right">
+                <h3 class="text-xl font-bold text-gray-800">ANCHORPOINT HOSPITALITY PRIVATE LIMITED</h3>
+                <p class="text-gray-600">Plot No 19, 20&21 Narayanaswamy Nagar</p>
+                <p class="text-gray-600">Solinganallur, Tamil Nadu, Chennai - 600119, India</p>
+                <p class="text-gray-600"><strong>CIN</strong> - U55101KA2014PTC076899</p>
+            </div>
+        </div>
+
+        <div class="mb-8 min-h-[800px]">
+
+        <div class="mb-5 overflow-x-auto">                
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Billing Details:</h3>
+
+            <div class="flex justify-between h-48">
+                <div class="flex flex-col justify-between w-1/2">
+                    <div>
+                        <p class="font-bold text-gray-800">Billed To</p>
+                        <p class="text-md font-bold text-gray-800">{{ cost_centre }}</p>
+                        <p class="text-gray-600">{{ address }}</p>
+                        {% if gstin_no %}
+                            <p class="text-gray-600"><strong>GSTIN</strong> - {{ gstin_no }}</p>
+                        {% endif %}                    
+                    </div>
+                    <div>
+                        <p class="text-gray-700"><strong>Booking ID :</strong> {{ booking_id }}</p>
+                        <p class="text-gray-700"><strong>Booked By :</strong> {{ booked_by }}</p>
+                        <p class="text-gray-700"><strong>Booking Type :</strong> {{ booking_type }}</p>
+                        <p class="text-gray-700"><strong>Booking Date :</strong> {{ booking_date }}</p>
+                        <p class="text-gray-700"><strong>Package Detail :</strong> {{ package_detail }}</p>
+                    </div>
+                       
+                </div>
+                
+                <div class="flex flex-col justify-between">
+                    <div>
+                        <p class="font-bold text-gray-800">Invoice Details</p>
+                        <p class="text-gray-600">Invoice No:<strong> {{ invoice_id }}</strong></p>
+                        <p class="text-gray-600">Invoice Date: {{ invoice_date }}</p>
+                        <p class="text-gray-600">State of Supply & State code: Tamil Nadu & 33</p>
+                        <p class="text-gray-700"><strong>GSTIN</strong> - 33AAMCA9719R1ZU</p>
+                        {% if original_invoice_no %}
+                        <p class="text-gray-700"><strong>Original Invoice No :</strong> {{ original_invoice_no }}</p>
+                        {% else %}
+                        <p class="text-gray-700"><strong>PO Number :</strong> {{ po_number }}</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <p class="text-gray-700"><strong>Cab Type:</strong> {{cab_type}}</p>
+                        <p class="text-gray-700"><strong>Opening Kms:</strong> {{opening_kms}}</p>
+                        <p class="text-gray-700"><strong>Closing Kms:</strong> {{closing_kms}}</p>
+                        <p class="text-gray-700"><strong>Start Time:</strong> {{starting_time}}</p>
+                        <p class="text-gray-700"><strong>End Time:</strong> {{ending_time}}</p>
+                    </div> 
+
+                </div>
+                
+            </div>
+            <table class="min-w-full bg-white rounded-lg shadow-sm mt-6 table-fixed">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 bg-gray-200 text-gray-600 font-bold uppercase text-sm">S.No</th>
+                    <th class="py-2 px-4 bg-gray-200 text-gray-600 font-bold uppercase text-sm">Particulars</th>
+                    <th class="py-2 px-4 bg-gray-200 text-gray-600 font-bold uppercase text-sm">Rate</th>
+                    <th class="py-2 px-4 bg-gray-200 text-gray-600 font-bold uppercase text-sm">Qty</th>
+                    <th class="py-2 px-4 bg-gray-200 text-gray-600 font-bold uppercase text-sm">Amount</th>
+                    <th class="py-2 px-4 bg-gray-200 text-gray-600 font-bold uppercase text-sm">Discount</th>
+                    <th class="py-2 px-4 bg-gray-200 text-gray-600 font-bold uppercase text-sm">Net Amount</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                {% for row in billing_details %}
+              <tr>
+                <td class="py-2 px-4 border-b border-gray-200">{{ loop.index }}</td>
+                <td class="py-2 px-4 border-b border-gray-200">{{ row.particular }}</td>
+                <td class="py-2 px-4 border-b border-gray-200">{{ row.rate }}</td>
+                <td class="py-2 px-4 border-b border-gray-200">{{ row.extra }}</td>
+                <td class="py-2 px-4 border-b border-gray-200">{{ row.amount }}</td>
+                <td class="py-2 px-4 border-b border-gray-200">{{ row.discount }}</td>
+                <td class="py-2 px-4 border-b border-gray-200">{{ row.net_amount }}</td>
+              </tr>
+              {% endfor %}            
+            </tbody>
+          </table>
+            </div>
+    
+            <div class="flex mb-3">
+                <div class="w-[100%] md:w-1/2">
+                    <div class="flex justify-between py-2">
+                        <span class="text-gray-600">Sub Total</span>
+                        <span class="text-gray-800">{{ sub_total }}</span>
+                    </div>
+                    <div class="flex justify-between py-2">
+                        <span class="text-gray-600">Taxable Value</span>
+                        <span class="text-gray-800">{{ taxable_value }}</span>
+                    </div>
+                    <div class="flex justify-between py-2">
+                        <span class="text-gray-600">CGST 2.5%</span>
+                        <span class="text-gray-800">{{ cgst }}</span>
+                    </div>
+                    <div class="flex justify-between py-2">
+                        <span class="text-gray-600">SGST 2.5%</span>
+                        <span class="text-gray-800">{{ sgst }}</span>
+                    </div>
+                    <div class="flex justify-between py-2">
+                        <span class="text-gray-800 font-bold">Total</span>
+                        <span class="text-gray-800 font-bold">{{ final_invoice_amount }}</span>
+                    </div>
+    
+                </div>
+            </div>
+            <p class="text-md text-gray-700 text-center">
+                Amount in Words : <strong>{{ invoice_cost_in_sentence }}</strong>
+            </p>
+    
+        </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Guest Information:</h3>
+            <div class="space-y-4">
+                {% for guest in guest_info %}
+
+                <div class="flex w-full">
+                    <div class="bg-gray-50 p-3 rounded-lg shadow-sm w-3/5 ">
+                        <p class="text-gray-700"><strong>Name :</strong> {{ guest.name }}</p>
+                        <p class="text-gray-700"><strong>Mobile :</strong> {{ guest.mobile }}</p>
+                        <p class="text-gray-700"><strong>Alternate Mobile :</strong> {{ guest.alternate_mobile | default('NA') }}</p>
+                        <p class="text-gray-700"><strong>Email :</strong> {{ guest.email }}</p>
+                        <p class="text-gray-700"><strong>Alternate Email :</strong> {{ guest.alternate_email | default('NA') }}</p>
+                        <p class="text-gray-700"><strong>Cost Centre :</strong> {{ cost_centre }}</p>
+                        <p class="text-gray-700"><strong>Pick-up Title :</strong> {{ guest.source.title | default('NA') }}</p>
+                        <p class="text-gray-700"><strong>Pick-up Address :</strong> {{ guest.source.address }}</p>
+                        <p class="text-gray-700"><strong>Drop-off Title :</strong> {{ guest.destination.title | default('NA') }}</p>
+                        <p class="text-gray-700"><strong>Drop-off Address :</strong> {{ guest.destination.address }}</p>
+                        <p class="text-gray-700"><strong>Stops :</strong> 
+                        {% set addresses = guest.waypoints | map(attribute='address') | select | list %}
+                            {% if addresses %}
+                                {{ addresses | join(', ') }}
+                            {% else %}
+                                NA
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="bg-gray-50 p-4 rounded-lg shadow-sm w-2/5">
+                        <p class="text-gray-700"><strong>Rank :</strong> {{ guest.rank | default('NA')}} </p>
+                        <p class="text-gray-700"><strong>Internal ID :</strong> {{ guest.internal_id | default('NA') }} </p>
+                        <p class="text-gray-700"><strong>Vessel Name :</strong> {{ guest.vessel_name | default('NA') }} </p>
+                        <p class="text-gray-700"><strong>Flight Details :</strong> {{ guest.flight_details | default('NA') }} </p>
+                        <p class="text-gray-700"><strong>Date Of Duty :</strong> {{ guest.date_of_duty | default('NA') }} </p>
+                        <p class="text-gray-700"><strong>Start Time :</strong> {{ guest.start_time | default('NA')}} </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        <div>
+            {% if image_urls %}
+            <h2 class="text-sm font-bold mb-4 mt-4">Trip Proofs</h2>
+            <ul class="flex space-x-4">
+                {% for image_url in image_urls %}
+                <li>
+                <img
+                    src="{{ image_url }}"
+                    alt="Downloaded Images"
+                    class="w-48 h-full object-contain"
+                />
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+    <div class="w-full text-center p-6">
+        <p>Powered by <strong>Travel Buddy</strong></p>
+    </div>
+        
+    <!-- Footer Section -->
+    <div style="position: fixed; bottom: 0; width: 100%">
+        <p class="text-xs">* System Generated Invoice. No Signature Required.</p>
+      </div>
+</body>
+</html> 

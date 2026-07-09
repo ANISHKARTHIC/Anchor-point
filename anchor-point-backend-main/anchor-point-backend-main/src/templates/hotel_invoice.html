@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel Booking Invoice</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 750px;
+        margin: 30px auto;
+        padding: 25px;
+        background-color: #fff;
+        border-radius: 8px;
+        color: #4d4d4d;
+      }
+      .header {
+        text-align: center;
+        border-bottom: 2px solid #333;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+      }
+      .header img {
+        max-width: 90px;
+      }
+      .header h3 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #333;
+        margin: 5px 0;
+      }
+      .header p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #666;
+      }
+      .info-section {
+        margin-bottom: 20px;
+      }
+      .info-section h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: #555;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 8px;
+      }
+      .info,
+      .table-section table {
+        width: 100%;
+      }
+      .info p,
+      .table-section th,
+      .table-section td {
+        font-size: 14px;
+        padding: 8px;
+      }
+      .info p {
+        margin: 0;
+      }
+      .info-table {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .table-section table {
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      .table-section th,
+      .table-section td {
+        border: 1px solid #ddd;
+        padding: 10px;
+      }
+      .table-section th {
+        background-color: #f0f0f0;
+        font-weight: 700;
+        text-align: left;
+      }
+      .table-section h3{
+        font-size: 18px;
+        font-weight: 700;
+        color: #555;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 8px;      
+      }
+      .totals {
+        margin-top: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+      }
+      .totals div {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+      }
+      .totals .total {
+        font-weight: bold;
+        font-size: 18px;
+        color: #333;
+      }
+      .amount-in-words {
+        font-style: italic;
+        font-size: 14px;
+        text-align: center;
+        margin-top: 15px;
+        color: #777;
+      }
+
+    .guest-info {
+    font-size: 14px;
+    display: flex;
+    gap: 30px; /* Space between cards */
+    flex-wrap: wrap;
+    margin-top: 18px;
+  }
+  .guest-info div {
+    flex: 1;
+    padding: 15px; /* Padding for spacious feel */
+    border: 1px solid #ddd;
+    border-radius: 10px; /* Rounded corners */
+    background-color: #ffffff; /* Background color */
+  }
+  .guest-info p {
+    margin: 1ppx 0; /* Margin for better spacing */
+    line-height: 1.6; /* Improved line height for readability */
+  }
+  .guest-info strong {
+    color: #333;
+    font-size: 14px;
+  }
+  .booking-info{ 
+    min-height: 1400px;
+  }
+  @page{
+    size: A4;
+    margin: 15px;
+  }
+</style>
+    </style>
+  </head>
+  <body>
+    <div class="container">
+    <div class="booking-info">
+      <div class="header">
+        <img src="/app/src/templates/anchorpoint_logo.jpg" alt="Company Logo" />
+        <h3>ANCHORPOINT HOSPITALITY PRIVATE LIMITED</h3>
+        <p>
+          Plot No 19, 20 & 21 Narayanaswamy Nagar, Solinganallur, Tamil Nadu,
+          Chennai - 600119, India
+        </p>
+        <p><strong>CIN:</strong> U55101KA2014PTC076899</p>
+      </div>
+
+      <div class="info-section">
+        <h3>Billing Details</h3>
+        <div class="info">
+          <p><strong>Billed To:</strong> {{ booking["cost_centre"]["code"] }}</p>
+          {% if booking["cost_centre"]["address"] %}
+          <p><strong>Address:</strong> - {{ booking["cost_centre"]["address"] }}</p>
+          {% endif %}                    
+          {% if booking["cost_centre"]["gstin_no"] %}
+          <p><strong>GSTIN:</strong> - {{ booking["cost_centre"]["gstin_no"] }}</p>
+          {% endif %}                  
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h3>Booking Details</h3>
+        <div class="info">
+          <div class="info-table">
+            <p><strong>Booking ID:</strong> {{ booking["bid"] }}</p>
+            <p><strong>Booking Type:</strong> Hotel</p>
+            <p><strong>Booked By:</strong> {{ booking["coordinator"]["name"] }}</p>
+          </div>
+          <div class="info-table">
+            <p><strong>Trip Type:</strong> {{ booking["trip_type"] }}</p>
+            <p><strong>Check In:</strong> {{ booking["check_in"] }}</p>
+            <p><strong>Check Out:</strong> {{ booking["check_out"] }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h3>Invoice Details</h3>
+        <div class="info">
+          <div class="info-table">
+            <p><strong>Invoice No:</strong> {{ invoice["invoice_no"] }}</p>
+            <p><strong>Invoice Date:</strong> {{ invoice["created_at"].strftime('%d-%m-%Y') }}</p>
+          </div>
+          <div class="info-table">
+            <p><strong>State of Supply & Code:</strong> Tamil Nadu & 33</p>
+            <p><strong>GSTIN:</strong> 33AAMCA9719R1ZU</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-section">
+        <h3>Invoice Summary</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>Particulars</th>
+              <th>SAC</th>
+              <th>Qty</th>
+              <th>Rate</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in invoice_items %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ item["name"] }}</td>
+              <td>{{ item["sac"] }}</td>
+              <td>{{ item["quantity"] }}</td>
+              <td>{{ item["rate"] }}</td>
+              <td>{{ item["amount"] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="totals">
+          <div><span>Taxable Sub Total:</span><span>{{ invoice["taxable_amount"] }}</span></div>
+          <div><span>Non Taxable Total:</span><span>{{ invoice["non_taxable_amount"] }}</span></div>
+          <div><span>CGST:</span><span>{{ invoice["cgst_amount"] }}</span></div>
+          <div><span>SGST:</span><span>{{ invoice["sgst_amount"] }}</span></div>
+          <div class="total"><span>Total:</span><span>{{ invoice["total_amount"] }}</span></div>
+        </div>
+        <p class="amount-in-words">
+          Amount in Words: {{ amount_in_words }}
+        </p>
+      </div>
+    </div>
+    <div>
+      <h3>Guest Information</h3>
+
+      <div class="guest-info">
+        {% for guest in guests %}
+        <div>
+          <p><strong>Name:</strong> {{ guest["name"] }}</p>
+          <p><strong>Phone:</strong> {{ guest["mobile"] }}</p>
+          <p><strong>Email:</strong> {{ guest["email"] }}</p>
+          <p><strong>Rank:</strong> {{ guest["rank"] }}</p>
+          <p><strong>Internal ID:</strong> {{ guest["internal_id"] }}</p>
+          <p><strong>Vessel Name:</strong> {{ guest["vessel_name"] }}</p>
+        </div>
+        {% endfor %}
+      </div>
+      </div>
+      <div class="text-center p-6">
+        <p>Powered by <strong>Travel Buddy</strong></p>
+    </div>
+  </div>
+  <div style="position: fixed; bottom: 0; width: 100%">
+    <p class="text-xs">* System Generated Invoice. No Signature Required.</p>
+  </div>
+  </body>
+</html>

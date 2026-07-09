@@ -1,0 +1,227 @@
+## Resolve react_native_pods.rb with node to allow for hoisting
+#require Pod::Executable.execute_command('node', ['-p',
+#  'require.resolve(
+#    "react-native/scripts/react_native_pods.rb",
+#    {paths: [process.argv[1]]},
+#  )', __dir__]).strip
+#
+#platform :ios, '15.6'
+#prepare_react_native_project!
+#
+## If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
+## because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
+##
+## To fix this you can also exclude `react-native-flipper` using a `react-native.config.js`
+## ```js
+## module.exports = {
+##   dependencies: {
+##     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
+## ```
+#flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
+#
+#
+#target 'anchor_point_mobile' do
+#  config = use_native_modules!
+#  use_frameworks! :linkage => :static
+#  $RNFirebaseAsStaticFramework = true
+#
+#  # Flags change depending on the env values.
+#  flags = get_default_flags()
+#
+#  use_react_native!(
+#    :path => config[:reactNativePath],
+#    # Hermes is now enabled by default. Disable by setting this flag to false.
+#    # :hermes_enabled => flags[:hermes_enabled],
+#    # :fabric_enabled => flags[:fabric_enabled],
+#    # Enables Flipper.
+#    #
+#    # Note that if you have use_frameworks! enabled, Flipper will not work and
+#    # you should disable the next line.
+#    # :flipper_configuration => flipper_config,
+#    # An absolute path to your application root.
+#    :hermes_enabled => false,
+#    :app_path => "#{Pod::Config.instance.installation_root}/.."
+#  )
+#
+#   # Add the following line to include the RNFS pod
+#   pod 'RNFS', :path => '../node_modules/react-native-fs'
+#   
+#
+#  target 'anchor_point_mobileTests' do
+#    inherit! :complete
+#    # Pods for testing
+#  end
+#  post_install do |installer|
+#    installer.pods_project.targets.each do |target|
+#      target.build_configurations.each do |config|
+#        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.6'
+#      end
+#    end
+##    installer.pods_project.targets.each do |target|
+##       target.build_configurations.each do |config|
+##         config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
+##       end
+##     end
+#    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+#    react_native_post_install(
+#      installer,
+#      config[:reactNativePath],
+#      :mac_catalyst_enabled => false
+#    )
+#    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+#  end 
+#end
+
+# Resolve react_native_pods.rb with node to allow for hoisting
+
+
+
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
+
+platform :ios, '17'
+
+ENV['RCT_NEW_ARCH_ENABLED'] = '0'
+prepare_react_native_project!
+
+
+# flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
+
+target 'anchor_point_mobile' do
+  
+  config = use_native_modules!
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
+
+  flags = get_default_flags()
+
+  # use_react_native!(
+  #   :path => config[:reactNativePath],
+  #   :hermes_enabled => false,
+  #   :app_path => "#{Pod::Config.instance.installation_root}/.."
+  # )
+
+  use_react_native!(
+  :path => config[:reactNativePath],
+  :hermes_enabled => false,
+  :fabric_enabled => false,
+  :app_path => "#{Pod::Config.instance.installation_root}/.."
+)
+  
+  pod 'gRPC-Core', '~> 1.69.0'
+  pod 'gRPC-C++', '~> 1.69.0'
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
+  target 'anchor_point_mobileTests' do
+    inherit! :complete
+  end
+
+  post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+          config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
+          config.build_settings['CLANG_CXX_LIBRARY'] = 'libc++'
+        end
+      end
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '17'
+        config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf-with-dsym'
+
+        if target.respond_to?(:product_type) && target.product_type == "com.apple.product-type.bundle"
+          config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+        end
+      end
+
+      # Fix for BoringSSL-GRPC compiler flag
+      if target.name == 'BoringSSL-GRPC'
+        target.source_build_phase.files.each do |file|
+          if file.settings && file.settings['COMPILER_FLAGS']
+            flags = file.settings['COMPILER_FLAGS'].split
+            flags.reject! { |flag| flag == '-GCC_WARN_INHIBIT_ALL_WARNINGS' }
+            file.settings['COMPILER_FLAGS'] = flags.join(' ')
+          end
+        end
+      end
+    end
+    # system("sudo cp ../patches/basic_seq.h /Users/daniel/Documents/React_native/anchor-point-coordinator-app/ios/Pods/gRPC-C++/src/core/lib/promise/detail/basic_seq.h")
+     # ✅ Safe patch copy without sudo
+    # require 'fileutils'
+    # patch_file = File.join(__dir__, '..', 'patches', 'basic_seq.h')
+    # dest_file  = File.join(__dir__, 'Pods', 'gRPC-Core', 'src', 'core', 'lib', 'promise', 'detail', 'basic_seq.h')
+
+    # if File.exist?(patch_file)
+    #   FileUtils.cp(patch_file, dest_file)
+    #   puts "✅ Patched basic_seq.h successfully"
+    # else
+    #   puts "⚠️ Patch file not found at #{patch_file}"
+    # end
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false
+    )
+
+    # __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  end
+end
+
+# platform :ios, '17'
+# prepare_react_native_project!
+
+# target 'anchor_point_mobile' do
+  
+#   config = use_native_modules!
+#   use_frameworks! :linkage => :static
+#   $RNFirebaseAsStaticFramework = true
+
+#   use_react_native!(
+#     :path => config[:reactNativePath],
+#     :hermes_enabled => false,
+#     :app_path => "#{Pod::Config.instance.installation_root}/.."
+#   )
+  
+#   pod 'gRPC-Core', '~> 1.69.0'
+#   pod 'gRPC-C++', '~> 1.69.0'
+#   pod 'RNFS', :path => '../node_modules/react-native-fs'
+
+#   target 'anchor_point_mobileTests' do
+#     inherit! :complete
+#   end
+
+#   post_install do |installer|
+#     installer.pods_project.targets.each do |target|
+#       target.build_configurations.each do |config|
+#         config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
+#         config.build_settings['CLANG_CXX_LIBRARY'] = 'libc++'
+#         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '17'
+#         config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf-with-dsym'
+
+#         if target.respond_to?(:product_type) && target.product_type == "com.apple.product-type.bundle"
+#           config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+#         end
+#       end
+
+#       if target.name == 'BoringSSL-GRPC'
+#         target.source_build_phase.files.each do |file|
+#           if file.settings && file.settings['COMPILER_FLAGS']
+#             flags = file.settings['COMPILER_FLAGS'].split
+#             flags.reject! { |flag| flag == '-GCC_WARN_INHIBIT_ALL_WARNINGS' }
+#             file.settings['COMPILER_FLAGS'] = flags.join(' ')
+#           end
+#         end
+#       end
+#     end
+
+#     react_native_post_install(
+#       installer,
+#       config[:reactNativePath],
+#       :mac_catalyst_enabled => false
+#     )
+
+#     __apply_Xcode_12_5_M1_post_install_workaround(installer)
+#   end
+# end

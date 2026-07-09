@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <title></title>
+    <!--[if !mso]><!-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        #outlook a { padding: 0; }
+        body { margin: 0; padding: 0; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { border: 1px solid #000; padding: 8px; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+        p { display: block; margin: 13px 0; }
+        .content {
+          display: flex;
+
+        }
+    </style>
+   
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);
+    </style>
+  <body>
+    <p>Dear coordinator,</p>
+    <p>
+      Your new hotel booking request has been successfully created with the following details.
+    </p>
+    <p><strong>Booking Information:</strong></p>
+    <table>
+      <tr>
+        <td><strong>Booking ID</strong></td>
+        <td>{{ bid }}</td>
+      </tr>
+      <tr>
+        <td><strong>Cost Centre</strong></td>
+        <td>{{ booking_request.cost_centre.code }}</td>
+      </tr>
+      <tr>
+        <td><strong>City</strong></td>
+        <td>{{ booking_request.city }}</td>
+      </tr>
+      <tr>
+        <td><strong>Trip Type</strong></td>
+        <td>{{ booking_request.trip_type }}</td>
+      </tr>
+      <tr>
+        <td><strong>Number of Rooms</strong></td>
+        <td>{{ booking_request.no_of_rooms }}</td>
+      </tr>
+      <tr>
+        <td><strong>Number of Adults</strong></td>
+        <td>{{ booking_request.no_of_adults }}</td>
+      </tr>
+      <tr>
+        <td><strong>Number of Children</strong></td>
+        <td>{{ booking_request.no_of_children }}</td>
+      </tr>
+      <tr>
+        <td><strong>Check-in Date</strong></td>
+        <td>{{ booking_request.check_in }}</td>
+      </tr>
+      <tr>
+        <td><strong>Check-out Date</strong></td>
+        <td>{{ booking_request.check_out }}</td>
+      </tr>
+      {% if booking_request.billing_option %}
+      <tr>
+        <td><strong>Billing Option</strong> </td>
+        <td>{{ booking_request.billing_option }}</td>
+      </tr>
+    {% endif %}
+      {% if booking_request.room_type %}
+        <tr>
+          <td><strong>Room Type</strong> </td>
+          <td>{{ booking_request.room_type }}</td>
+        </tr>
+      {% endif %}
+      {% if booking_request.description %}
+      <tr>
+        <td><strong>Description</strong> </td>
+        <td>{{ booking_request.description }}</td>
+      </tr>
+      {% endif %}
+    </table>
+    
+    <p><strong>Guest Information:</strong></p>
+
+    <table>
+      <tr>
+        <td><strong>Name</strong></td>
+        <td><strong>Mobile Number</strong></td>
+        <td><strong>Email</strong></td>
+        <td><strong>Vessel Name</strong></td>
+        <td><strong>Rank</strong></td>
+        <td><strong>Internal ID</strong></td>
+      </tr>
+      {% for guest in booking_request.guests %}
+      <tr>
+        <td>{{ guest.name }}</td>
+        <td>{{ guest.mobile }}</td>
+        <td>{{ guest.email }}</td>
+        <td>{{ guest.vessel_name }}</td>
+        <td>{{ guest.rank }}</td>
+        <td>{{ guest.internal_id }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+  <p>
+    Please do not reply to this email. This is an automated message and responses will not be monitored.
+    If you have any queries, please reach out to this mail bookings@anchorpoint.in.
+  </p>
+  <p>
+    Best regards,
+  </p>
+  <p>
+    Anchorpoint.
+  </p>
+  </html>

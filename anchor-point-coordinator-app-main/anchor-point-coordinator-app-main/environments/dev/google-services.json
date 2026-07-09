@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "239873402377",
+    "project_id": "anchorpoint-8ac26",
+    "storage_bucket": "anchorpoint-8ac26.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239873402377:android:099f36e1bb307cb20bbad8",
+        "android_client_info": {
+          "package_name": "in.anchorpoint.ca"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKx75as2kcLJgYxdW7Z_ThmbsK3crIBcQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

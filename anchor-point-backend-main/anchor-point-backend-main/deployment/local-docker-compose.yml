@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  api_1:
+    build:
+      context: ..
+      dockerfile: ./deployment/local.Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ..:/app
+      - /app/src/migrations/versions/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - dev.env
+    # depends_on:
+    #   - db_1
+#     networks:
+#       - shared-network
+
+#   db_1:
+#     build:
+#       context: ..
+#       dockerfile: ./deployment/local_db.Dockerfile
+#     restart: always
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: postgres
+#       POSTGRES_DB: postgres
+#     ports:
+#       - "5433:5432"
+#     volumes:
+#       - postgres-data-1:/var/lib/postgresql/data
+#     networks:
+#       - shared-network
+
+# networks:
+#   shared-network:
+#     external: true
+
+# volumes:
+#   postgres-data-1:

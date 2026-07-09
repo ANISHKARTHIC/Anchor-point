@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Dear {{coordinator_name}},</p>
+
+    <p>We are pleased to confirm your hotel booking at <strong>{{vendor_name}}</strong>. Please find your reservation details below:</p>
+    
+    <p><strong>Booking Details:</strong></p>
+    <ul>
+        <li><strong>Booking ID:</strong> {{bid}}</li>
+        <li><strong>Check-in Date:</strong> {{check_in}}</li>
+        <li><strong>Check-out Date:</strong> {{check_out}}</li>
+        <li><strong>Room Type:</strong> {{room_type}}</li>
+        <li><strong>Number of Rooms:</strong> {{no_of_rooms}}</li>
+        <li><strong>Number of Guests:</strong> {{no_of_guests}}</li>
+        <li><strong>Confirmation Number:</strong> {{confirmation_no}}</li>
+        <li><strong>Hotel Address:</strong> {{vendor_address}}</li>
+    </ul>
+    
+    {% if description %}
+    <p><strong>Description:</strong></p>
+    <p>{{description}}</p> 
+    {% endif %}
+    
+    <p>Please do not reply to this email. This is an automated message and responses will not be monitored.</p>
+    
+    <p>If you have any queries, please contact us at <strong>{{contact_support}}</strong> or email <a href="mailto:bookings@anchorpoint.in">bookings@anchorpoint.in</a>.</p>
+    
+    <p>Best regards,<br>
+    Anchorpoint Team.</p>
+    </body>
+    </html>   
+</body>
+</html>

@@ -1,0 +1,4 @@
+2026-07-07 21:13:36.919 IST [10808] LOG:  redirecting log output to logging collector process
+2026-07-07 21:13:36.919 IST [10808] HINT:  Future log output will appear in directory "log".
+2026-07-07 21:14:05.140 IST [10912] LOG:  redirecting log output to logging collector process
+2026-07-07 21:14:05.140 IST [10912] HINT:  Future log output will appear in directory "log".
