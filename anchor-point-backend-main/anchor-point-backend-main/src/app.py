@@ -21,6 +21,7 @@ from app_routes.auth import auth_operations
 from app_routes.package import package_operations
 from app_routes.callback import callback_operations
 from app_routes.hotel_bookings import hotel_operations
+from app_routes.upload import upload_operations
 from app_schemas.schema import AccessToken, ChatMessage, CostCentreModel, GuestModel, GuestUpdate, VerifyRequest, TariffPlanSchema, UpdateTariffPlanSchema
 from common_utils import chat_messages_push_notification
 from app_dependencies.schedulers.notify_vendor import start_scheduer,stop_scheduler
@@ -59,6 +60,7 @@ app.include_router(device_operations.router, prefix="/api/devices")
 app.include_router(auth_operations.router, prefix="/api/auth")
 app.include_router(callback_operations.router, prefix="/api/callbacks")
 app.include_router(hotel_operations.router, prefix="/api/hotel_bookings")
+app.include_router(upload_operations.router, prefix="/api/upload")
 
 @app.get("/api/health")
 def health():

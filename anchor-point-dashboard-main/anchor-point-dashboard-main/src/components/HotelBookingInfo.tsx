@@ -53,6 +53,7 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
   const [selectedCheckinDate, setSelectedCheckinDate] = useState<any>(null);
   const [selectedCheckoutDate, setSelectedCheckoutDate] = useState<any>(null);
   const [description, setDescription] = useState("");
+  const [poNumber, setPoNumber] = useState("");
   const [coordinatorError,setCoordinatorError] = useState(false)
   const [emailIds,setEmailIds] = useState([]);
   const [pickup, setPickup] = useState({
@@ -111,7 +112,8 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
       guests: emptyGuests,
       description: description,
       cc_recipients: emailIds,
-      related_booking_id: selectedBid? selectedBid : "",
+      po_number: poNumber,
+      related_booking_id: selectedBid ? selectedBid : "",
       billing_option: selectedPaidBy.value,
     }
     pickup.isPickup ? obj = {...obj, pickup: {flight : pickup.flight, time : pickup.time?.format("HH:MM")}} : ""
@@ -203,6 +205,7 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
       setGuestCount(prefilledBookingData?.no_of_adults|| 0)
       setKidsCount(prefilledBookingData?.no_of_children || 0)
       setRoomCount(prefilledBookingData?.no_of_rooms || 0)
+      setPoNumber(prefilledBookingData?.po_number || "")
 
       let room = roomtype.find((item:any)=>item.name == prefilledBookingData?.room_type)
       setSelectedRoomType(room || {})
@@ -249,6 +252,7 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
         guests: prefilledBookingData?.guests,
         description: description,
         cc_recipients: emailIds,
+        po_number: poNumber,
         related_booking_id: selectedBid,
         billing_option: selectedPaidBy?.value,
       }
@@ -305,24 +309,28 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
             maxWidth: 350,
             minHeight: 550,
             maxHeight: 650,
-            overflowY: "scroll"
+            overflowY: "scroll",
+            boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05)",
+            border: "1px solid #E2E8F0",
+            borderRadius: "12px"
           }}
         >
           <Box
             sx={{
               display: "flex",
-              backgroundColor: "lightgray",
+              backgroundColor: "#F8FAFC",
               justifyContent: "space-between",
               alignItems: "center",
               paddingRight: 1,
               position: "sticky",
               top: 0,
               zIndex: 1,
+              borderBottom: "1px solid #E2E8F0"
             }}
           >
             <CardHeader
               title={
-                <div className="text-base font-bold">
+                <div className="text-base font-bold text-slate-800">
                   {STRING_BOOKINGS.HOTEL_HEADER}
                 </div>
               }
@@ -330,7 +338,6 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                 justifyContent: "center",
                 alignItems: "center",
                 display: "flex",
-                backgroundColor: "lightgray",
               }}
             />
 
@@ -339,7 +346,17 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
               size="small"
               disabled={isFormDisabled()}
               type="submit"
-              sx={{ padding: 1 }}
+              sx={{ 
+                padding: '6px 16px', 
+                backgroundColor: "#334155", 
+                textTransform: "none", 
+                boxShadow: "none",
+                borderRadius: "6px",
+                '&:hover': {
+                  backgroundColor: "#475569",
+                  boxShadow: "none"
+                }
+              }}
               onClick={handleBookinginfoSubmit}
             >
               Continue
@@ -820,6 +837,23 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                         setDescription(e.target.value)
                       }}
                     />
+              </Box>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                <div className="font-bold text-sm">
+                  PO Number
+                </div>
+                <TextField
+                  id="po-number"
+                  placeholder="PO Number"
+                  value={poNumber}
+                  size="small"
+                  multiline
+                  maxRows={3}
+                  disabled={checkDisable}
+                  onChange={(e:any)=>{
+                    setPoNumber(e.target.value)
+                  }}
+                />
               </Box>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
                 <div className="font-bold text-sm">

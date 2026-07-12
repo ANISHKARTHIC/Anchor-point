@@ -4,13 +4,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#21539E",
-        secondary: "#4EC7E6",
-        tertiary: "#64748B",
-        appBg: "#F8FAFC",
-        skin: "#f2c04c",
-        boldGrey: "#94A3B8",
+        primary: "#334155", /* slate-700 */
+        secondary: "#475569", /* slate-600 */
+        tertiary: "#94A3B8", /* slate-400 */
+        appBg: "#F8FAFC", /* slate-50 */
+        accent: "#059669", /* emerald-600 */
+        skin: "#059669",
+        boldGrey: "#0F172A", /* slate-900 */
       },
+      fontFamily: {
+        sans: ["DM Sans", "sans-serif"],
+      }
     },
   },
   plugins: [],

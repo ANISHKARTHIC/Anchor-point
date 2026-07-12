@@ -2958,6 +2958,7 @@ function BookingDetail() {
                               bookingId={state?.id}
                               vendorId={state?.vendor?.id}
                               invoiceData={hotelInvoiceData}
+                              bookingData={state}
                             />
                           </AccordionDetails>
                         </Accordion>

@@ -61,8 +61,8 @@ const closedMixin = (theme: Theme): CSSObject => ({
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  justifyContent: "space-around",
-  padding: theme.spacing(0, 1.5),
+  justifyContent: "space-between",
+  padding: theme.spacing(0, 2),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
@@ -76,11 +76,21 @@ const Drawer = styled(MuiDrawer, {
   boxSizing: "border-box",
   ...(open && {
     ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme),
+    "& .MuiDrawer-paper": {
+      ...openedMixin(theme),
+      backgroundColor: "#FFFFFF",
+      borderRight: "1px solid #E2E8F0",
+      boxShadow: "none",
+    },
   }),
   ...(!open && {
     ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme),
+    "& .MuiDrawer-paper": {
+      ...closedMixin(theme),
+      backgroundColor: "#FFFFFF",
+      borderRight: "1px solid #E2E8F0",
+      boxShadow: "none",
+    },
   }),
 }));
 const organiserSideMenu = [
@@ -88,7 +98,7 @@ const organiserSideMenu = [
     name: "Dashboard",
     route: ROUTE.HOME,
     icon: (
-      <Apps className="[&>path]:fill-[#64748B] [&>path]:stroke-[#64748B]" />
+      <Apps className="[&>path]:fill-slate-500 [&>path]:stroke-slate-500" />
     ),
   },
   {
@@ -167,8 +177,19 @@ function MiniDrawer() {
       minHeight: 48,
       justifyContent: open ? "initial" : "center",
       px: 2.5,
-      borderRadius: "4px",
-      margin: "0px 13px 6px 13px",
+      borderRadius: "8px",
+      margin: "2px 12px 2px 12px",
+      transition: "all 200ms ease-in-out",
+      "&:hover": {
+        backgroundColor: "#F8FAFC",
+      },
+      "&.Mui-selected": {
+        backgroundColor: "#F1F5F9",
+        borderLeft: "3px solid #059669",
+        "&:hover": {
+          backgroundColor: "#F1F5F9",
+        },
+      },
     },
   });
 
@@ -234,20 +255,21 @@ function MiniDrawer() {
             edge="start"
             aria-label="menu"
             sx={{
-              bgcolor: "#4EC7E6",
+              bgcolor: "#334155",
               "&:hover": {
-                bgcolor: "#4EC7E6",
+                bgcolor: "#475569",
               },
+              transition: "all 200ms ease-in-out",
             }}
-            className="rounded-sm"
+            className="rounded-lg"
             onClick={handleDrawerClose}
           >
             <MenuIcon className="text-white" />
           </IconButton>
         </DrawerHeader>
-        <Divider />
+        <Divider sx={{ borderColor: "#E2E8F0" }} />
         <div
-          className={`pt-6 pb-2 px-3 text-xs font-bold text-[#94A3B8]  mt-2 ${
+          className={`pt-6 pb-2 px-3 text-[11px] font-medium tracking-widest text-slate-400 mt-2 ${
             open ? "ml-6" : ""
           }`}
         >
@@ -292,7 +314,7 @@ function MiniDrawer() {
                     </ListItemIcon>
                     <ListItemText
                       primary={item.name}
-                      className="text-sm font-medium text-[#64748B]"
+                      className="text-sm font-medium text-slate-500"
                       sx={{ opacity: open ? 1 : 0 }}
                     />
                   </ListItemButton>

@@ -38,6 +38,9 @@ const HotelInvoice = (props: any) => {
   const [buffer, setBuffer] = useState(false);
   const [invoiceClientPDF, setInvoiceClientPDF] = useState("");
   const [poNumber, setPoNumber] = useState("");
+  const [hotelName, setHotelName] = useState("");
+  const [supportingDocumentUrl, setSupportingDocumentUrl] = useState("");
+  const [uploadingDoc, setUploadingDoc] = useState(false);
   const [description, setDescription] = useState("");
   const [alertMsg, setAlertMsg] = useState("");
   const [alertType, setAlertType] = useState("");
@@ -76,11 +79,55 @@ const HotelInvoice = (props: any) => {
     if (props?.invoiceData?.invoice_items) {
       setItems(props?.invoiceData?.invoice_items);
       setPoNumber(props?.invoiceData?.po_number);
+      setHotelName(props?.invoiceData?.hotel_name || "");
+      setSupportingDocumentUrl(props?.invoiceData?.supporting_document_url || "");
       setDescription(props?.invoiceData?.description);
       setInvoiceClientPDF(props?.invoiceData?.s3_url);
       setEdit(true);
     }
   }, [props.invoiceData]);
+
+  useEffect(() => {
+    if (props?.bookingData && !props?.invoiceData?.invoice_items) {
+      setPoNumber(props?.bookingData?.po_number || "");
+    }
+  }, [props.bookingData, props.invoiceData]);
+
+  const handleFileUpload = async (event: any) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    setUploadingDoc(true);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch(`${BASE_URL}/upload/`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("userToken"),
+        },
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error("Failed to upload document");
+      }
+
+      setSupportingDocumentUrl(data.url);
+      setAlertType("success");
+      setAlertMsg("Document uploaded successfully");
+      setTimeout(() => setAlertMsg(""), 2000);
+    } catch (error) {
+      console.log(error);
+      setAlertType("error");
+      setAlertMsg("Error uploading document");
+      setTimeout(() => setAlertMsg(""), 3000);
+    } finally {
+      setUploadingDoc(false);
+    }
+  };
 
   const reviewInvoiceHandler = async (event: any) => {
     event.preventDefault();
@@ -98,6 +145,8 @@ const HotelInvoice = (props: any) => {
       sgst_amount: Number(taxRate / 2).toFixed(2),
       total_amount: total.toFixed(2),
       po_number: poNumber,
+      hotel_name: hotelName,
+      supporting_document_url: supportingDocumentUrl,
       description: description,
       invoice_items: [{}],
     };
@@ -264,6 +313,9 @@ const HotelInvoice = (props: any) => {
             for (let key in filteredData[0]) {
               item[key] = filteredData[0][key];
             }
+            // Auto populate rate from hotel pricing
+            item.rate = filteredData[0].single_room_rate || filteredData[0].double_room_rate || filteredData[0].rate || 0;
+            item.name = editedItem.value;
           }
           return item;
         });
@@ -330,23 +382,54 @@ const HotelInvoice = (props: any) => {
     setTotal(tot);
   }, [JSON.stringify(items)]);
 
-  return (
+return (
     <form
       onSubmit={reviewInvoiceHandler}
       className="relative flex flex-col px-2 md:flex-row"
     >
-      <div className="my-6 flex-1 space-y-2  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
+      <div className="my-6 flex-1 space-y-2 rounded-xl bg-white p-4 shadow-sm border border-slate-200 sm:space-y-4 md:p-6">
+        <Typography fontSize={20} fontWeight={600} className="text-slate-800">
+          Client Invoice Details
+        </Typography>
         <div className="mb-5 items-end justify-end">
           {alertMsg && <Toast message={alertMsg} toastType={alertType} />}
         </div>
-        <div className="flex flex-row justify-end items-center mb-10 gap-2">
-          <span className={"font-bold"}>PO Number</span>
-          <TextField
-            variant="standard"
-            inputProps={{ style: { textAlign: "right" } }}
-            value={poNumber}
-            onChange={(e: any) => setPoNumber(e.target.value)}
-          />
+        <div className="flex flex-col md:flex-row justify-end items-end md:items-center mb-10 gap-4">
+          <div className="flex flex-row items-center gap-2">
+            <span className={"font-bold"}>PO Number</span>
+            <TextField
+              variant="standard"
+              inputProps={{ style: { textAlign: "right" } }}
+              value={poNumber}
+              onChange={(e: any) => setPoNumber(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-row items-center gap-2">
+            <span className={"font-bold"}>Hotel Name</span>
+            <TextField
+              variant="standard"
+              inputProps={{ style: { textAlign: "right" } }}
+              value={hotelName}
+              onChange={(e: any) => setHotelName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flex flex-row items-center gap-2">
+            <Button
+              variant="outlined"
+              component="label"
+              disabled={uploadingDoc}
+              size="small"
+            >
+              {uploadingDoc ? <CircularProgress size={20} /> : "Upload Doc"}
+              <input type="file" hidden onChange={handleFileUpload} />
+            </Button>
+            {supportingDocumentUrl && (
+              <a href={supportingDocumentUrl} target="_blank" rel="noreferrer" className="text-blue-500 text-sm hover:underline">
+                View Doc
+              </a>
+            )}
+          </div>
         </div>
         <table className="w-full p-4 text-left">
           <thead>

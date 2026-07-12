@@ -104,6 +104,7 @@ def insert_booking_record(booking_request, coordinator_id, organizer_id, cur_utc
         "description": booking_request.description,
         "related_booking_id": booking_request.related_booking_id,
         "cc_recipients": booking_request.cc_recipients,
+        "po_number": booking_request.po_number,
         "pickup": booking_request.pickup,
         "drop": booking_request.drop,
         "billing_option": booking_request.billing_option,
@@ -855,6 +856,9 @@ def update_hotel_booking_info_by_booking_id(user: Union[Coordinator, Organizer],
         meta_data = {"organizer_name": user.name, "prev_cc_recipients" : hotel_booking_record["cc_recipients"], "cur_cc_recipients": new_cc_recipients }
         event = "cc_recipients_change"
         records_to_update["cc_recipients"] = new_cc_recipients
+        
+    if "po_number" in update_request:
+        records_to_update["po_number"] = update_request["po_number"]
     
     filter_criteria = [HotelBooking.id == booking_id]
     update_result = crud.update_records(HotelBooking, filter_criteria=filter_criteria, records_to_update=records_to_update)
@@ -1005,6 +1009,7 @@ def create_invoice(booking_id: str, invoice: HotelInvoiceModel):
             HotelInvoice, 
             booking_id=booking_id, invoice_no=invoice_no, taxable_amount=invoice.taxable_amount, non_taxable_amount=invoice.non_taxable_amount,
             cgst_amount=invoice.cgst_amount, sgst_amount=invoice.sgst_amount, igst_amount=invoice.igst_amount, po_number=invoice.po_number,
+            hotel_name=invoice.hotel_name, supporting_document_url=invoice.supporting_document_url,
             total_amount=invoice.total_amount, description=invoice.description, cdate=cur_utc_time, mdate=cur_utc_time
         )
         if not invoice_no:
@@ -1090,6 +1095,8 @@ def update_hotel_invoice(booking_id: str, invoice: HotelInvoiceModel):
             "sgst_amount": invoice.sgst_amount,
             "total_amount": invoice.total_amount,
             "po_number": invoice.po_number,
+            "hotel_name": invoice.hotel_name,
+            "supporting_document_url": invoice.supporting_document_url,
             "description": invoice.description,
             "mdate": cur_utc_time
         }

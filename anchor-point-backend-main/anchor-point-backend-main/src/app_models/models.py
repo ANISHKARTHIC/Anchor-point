@@ -765,6 +765,7 @@ class Invoice(Base):
     base_fare = Column(Float)
     driver_charge = Column(Float)
     po_number = Column(String)
+    supporting_document_url = Column(String)
     cdate = Column(TIMESTAMP(timezone=True), default=datetime.utcnow, server_default=func.now(), nullable=False)
     mdate = Column(
     TIMESTAMP(timezone=True),
@@ -946,6 +947,7 @@ class HotelBooking(Base):
     drop = Column(JSONB)
     confirmation_no = Column(String)
     related_booking_id = Column(String)
+    po_number = Column(String)
     cc_recipients = Column(ARRAY(String))
     cdate = Column(
         TIMESTAMP(timezone=True),
@@ -1124,6 +1126,8 @@ class HotelInvoice(Base):
     igst_amount = Column(Float, nullable=False)
     total_amount = Column(Float, nullable=False)
     po_number = Column(String)
+    hotel_name = Column(String)
+    supporting_document_url = Column(String)
     description = Column(String)
     cdate = Column(
         TIMESTAMP(timezone=True),

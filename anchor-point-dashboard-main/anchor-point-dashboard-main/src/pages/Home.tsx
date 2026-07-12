@@ -101,22 +101,22 @@ function Home() {
 
   return (
     <>
-      <div className="h-[calc(100vh-64px)] flex-col justify-around w-full bg-appBg pt-2 lg:pt-0">
-        <div className="flex flex-col bg-white rounded-md px-3 pt-4 pb-6  mb-8 m-6">
+      <div className="h-[calc(100vh-64px)] flex-col justify-around w-full bg-slate-50 pt-2 lg:pt-0">
+        <div className="flex flex-col bg-white rounded-xl border border-slate-200 shadow-sm px-3 pt-4 pb-6 mb-8 m-6">
           <TaskSummary />
         </div>
         <div className="flex w-full justify-around">
           <div className="w-[55%] ">
-            <div className="flex justify-between items-center mb-3">
-              <div className="font-bold text-base">
+            <div className="flex justify-between items-center mb-4">
+              <div className="font-semibold text-base text-slate-800">
                 {STRING_BOOKINGS_LIST.OPEN_REQUESTS}{" "}
-                <span className="text-tertiary">
+                <span className="text-slate-400">
                   ({totalRecords + count.value})
                 </span>
               </div>
               {count.value > 0 && (
                 <div
-                  className="text-xs font-semibold p-2 rounded-3xl text-white bg-primary"
+                  className="text-xs font-semibold px-3 py-1.5 rounded-3xl text-white bg-[#059669] cursor-pointer transition-all duration-200 hover:bg-[#047857]"
                   onClick={handleNewRequests}
                 >
                   <RefreshIcon fontSize="small" className="mr-1" />
@@ -126,8 +126,8 @@ function Home() {
               )}
             </div>
 
-            <div className="">
-              <div className="h-80 overflow-y-scroll p-2">
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+              <div className="h-80 overflow-y-scroll p-3">
                 {requests?.map((request: any) => (
                   <RequestList
                     booking={request}
@@ -138,11 +138,11 @@ function Home() {
                   />
                 ))}
               </div>
-              <div className="md:flex md:justify-end py-4">
+              <div className="md:flex md:justify-end py-3 px-3 border-t border-slate-200">
                 <Pagination
                   count={totalPages}
                   shape="rounded"
-                  sx={{ color: "#21539E" }}
+                  sx={{ color: "#334155" }}
                   onChange={(event, pageNo) => {
                     setPage(pageNo);
                   }}
@@ -153,8 +153,8 @@ function Home() {
 
           <div className="m-2 overflow-y-auto">
             {pendingInvoices.length != 0 ? (
-              <div>
-                <div className="font-bold text-base mb-3 ">
+              <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+                <div className="font-semibold text-base mb-3 text-slate-800">
                   {"Pending Invoices"}
                 </div>
                 {pendingInvoices?.map((request: any) => (

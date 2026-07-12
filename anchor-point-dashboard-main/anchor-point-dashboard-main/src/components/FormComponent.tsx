@@ -1385,7 +1385,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
 
               <Box sx={[styles.flex, { gap: 5 }]}>
                 <Box sx={styles.flex2}>
-                  <div className="font-bold text-sm">{"Date Of Duty"}</div>
+                  <div className="text-sm font-semibold text-slate-800 mb-1">{"Date Of Duty"}</div>
                   <Controller
                     name="date_of_duty"
                     control={control}
@@ -1411,11 +1411,13 @@ const FormComponent: React.FC<FormComponentProps> = ({
                           }}
                           format="DD-MM-YYYY" // Display format in UI
                           sx={{
-                            "& .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input":
-                            {
-                              padding: "10px",
-                            },
+                            width: "100%",
+                            "& .MuiInputBase-root": {
+                              borderRadius: "8px",
+                              backgroundColor: "#FFFFFF",
+                            }
                           }}
+                          slotProps={{ textField: { size: 'small' } }}
                         />
                       </LocalizationProvider>
                     )}
@@ -1423,7 +1425,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
                 </Box>
 
                 <Box sx={styles.flex2}>
-                  <div className="font-bold text-sm">{"Start Time"}</div>
+                  <div className="text-sm font-semibold text-slate-800 mb-1">{"Start Time"}</div>
                   <Controller
                     name="start_time"
                     control={control}
@@ -1459,11 +1461,13 @@ const FormComponent: React.FC<FormComponentProps> = ({
                                 seconds: renderTimeViewClock,
                               }}
                               sx={{
-                                "& .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input":
-                                {
-                                  padding: "10px",
-                                },
+                                width: "100%",
+                                "& .MuiInputBase-root": {
+                                  borderRadius: "8px",
+                                  backgroundColor: "#FFFFFF",
+                                }
                               }}
+                              slotProps={{ textField: { size: 'small' } }}
                             />
                           </LocalizationProvider>
                         </Box>

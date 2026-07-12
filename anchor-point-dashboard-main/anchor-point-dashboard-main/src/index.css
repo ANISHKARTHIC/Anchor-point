@@ -1,29 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* width */
+/* ── Scrollbar ────────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
-
-/* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
-
-/* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 5px;
+  background: #cbd5e1;
+  border-radius: 100px;
 }
-
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #94a3b8;
 }
 
+/* ── Root ─────────────────────────────────────────── */
 #root {
-  font-family: "Open Sans", sans-serif;
+  font-family: "DM Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Base layer resets ────────────────────────────── */
+@layer base {
+  body {
+    @apply bg-appBg text-slate-800;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight text-slate-900;
+  }
+  a {
+    @apply transition-colors duration-200;
+  }
+}
+
+/* ── Global transitions ──────────────────────────── */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* ── MUI Overrides ───────────────────────────────── */
+.MuiOutlinedInput-root {
+  border-radius: 8px !important;
+}
+.MuiButton-root {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em !important;
+}
+.MuiCard-root {
+  border-radius: 12px !important;
+}
+
+/* ── Selection ───────────────────────────────────── */
+::selection {
+  background-color: #059669;
+  color: white;
 }

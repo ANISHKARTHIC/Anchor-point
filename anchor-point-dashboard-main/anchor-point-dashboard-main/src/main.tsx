@@ -19,8 +19,14 @@ const user  = {
 "name": "Admin"
 }
 
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import theme from "./theme.ts";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <BrowserRouter>
         <LoadScript
           googleMapsApiKey={GOOGLE_MAP_API_KEY}
@@ -30,5 +36,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         {/* <Chat bookingId={bookingId} bookingType={bookingType} currentUser={user}/> */}
         </LoadScript>
       </BrowserRouter>
+    </ThemeProvider>
   </Provider>,
 );

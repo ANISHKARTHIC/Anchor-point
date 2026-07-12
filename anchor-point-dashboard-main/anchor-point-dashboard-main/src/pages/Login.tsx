@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import quote from "../assets/travelBuddy.png";
 import circle from "../assets/pointCircle.svg";
 import powered from "../assets/anchorpoint.png";
 import { BASE_URL, STRING_ALERT, STRING_LOGIN } from "../constants/string";
 import { ROUTE } from "../constants/routes";
-import WavingHandIcon from "@mui/icons-material/WavingHand";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import {
@@ -303,45 +301,62 @@ function Login() {
               setShowOTP(false);
               setOTP("");
             }}
+            sx={{ color: "#475569" }}
           >
             <ArrowBackIcon />
-            Back
+            <span className="ml-1 text-sm font-medium">Back</span>
           </IconButton>
         </div>
-        <div className="mt-2"></div>
-        <Typography fontSize={20}>{STRING_LOGIN.TEXT_ENTEROTP}</Typography>
-        <div className="mt-2"></div>
-        <MuiOtpInput
-          className="w-[400px]"
-          sx={{
-            "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
-              {
-                display: "none",
+        <div className="mt-4">
+          <Typography fontSize={18} fontWeight={500} className="text-slate-800">
+            {STRING_LOGIN.TEXT_ENTEROTP}
+          </Typography>
+          <Typography fontSize={13} className="text-slate-400 mt-1">
+            We've sent a 6-digit code to your email
+          </Typography>
+        </div>
+        <div className="mt-4">
+          <MuiOtpInput
+            className="w-[400px]"
+            sx={{
+              "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+                {
+                  display: "none",
+                },
+              "& input[type=number]": {
+                MozAppearance: "textfield",
               },
-            "& input[type=number]": {
-              MozAppearance: "textfield",
-            },
-          }}
-          inputMode="numeric"
-          TextFieldsProps={{
-            type: "number",
-            inputProps: {
-              inputMode: "numeric",
-              pattern: "[0-9]*",
-            },
-            size: "small",
-          }}
-          length={6}
-          gap={2}
-          value={otp}
-          onChange={(val) => setOTP(val)}
-        ></MuiOtpInput>
-        <div className="mt-5 w-100 flex justify-center">
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "8px",
+              },
+            }}
+            inputMode="numeric"
+            TextFieldsProps={{
+              type: "number",
+              inputProps: {
+                inputMode: "numeric",
+                pattern: "[0-9]*",
+              },
+              size: "small",
+            }}
+            length={6}
+            gap={1.5}
+            value={otp}
+            onChange={(val) => setOTP(val)}
+          ></MuiOtpInput>
+        </div>
+        <div className="mt-6 w-100 flex justify-center">
           <LoadingButton
             variant="contained"
-            className="w-[50%] h-11  p-1"
+            className="w-[50%] h-11 p-1"
             onClick={submitOTP}
             loading={status === "Loading"}
+            sx={{
+              backgroundColor: "#334155",
+              borderRadius: "8px",
+              fontWeight: 500,
+              "&:hover": { backgroundColor: "#475569" },
+            }}
           >
             <span>{STRING_LOGIN.LABEL_CONFIRM}</span>
           </LoadingButton>
@@ -351,8 +366,8 @@ function Login() {
   };
   const renderGetDetailsInput = () => {
     return (
-        <Dialog keepMounted  sx={{ '& .MuiDialog-paper': { width: '30%', maxHeight: 435 } }} maxWidth={'lg'} open={showDetailsInput}>
-          <DialogTitle>Lets Get Started</DialogTitle>
+        <Dialog keepMounted  sx={{ '& .MuiDialog-paper': { width: '30%', maxHeight: 435, borderRadius: '16px' } }} maxWidth={'lg'} open={showDetailsInput}>
+          <DialogTitle sx={{ fontWeight: 600, color: "#0F172A" }}>Let's Get Started</DialogTitle>
           <DialogContent dividers>
             <Stack gap={3}>
               <PhoneWithCountryCode
@@ -368,7 +383,7 @@ function Login() {
               />
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                 <AccountCircle
-                  sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                  sx={{ color: "#94A3B8", mr: 1, my: 0.5 }}
                 />
                 <TextField
                   fullWidth={true}
@@ -380,10 +395,15 @@ function Login() {
               </Box>
             </Stack>
           </DialogContent>
-          <DialogActions>
+          <DialogActions sx={{ padding: "12px 20px" }}>
             <Button
               disabled={userName.length === 0 || phoneNumber.length === 0}
               onClick={handleDetailsSubmit}
+              variant="contained"
+              sx={{
+                backgroundColor: "#334155",
+                "&:hover": { backgroundColor: "#475569" },
+              }}
             >
               Confirm
             </Button>
@@ -393,54 +413,207 @@ function Login() {
   };
   return (
     <>
-      <div className="bg-gradient-to-r from-primary to-secondary h-screen flex items-center justify-around flex-col">
-        {status === "error" && (
-          <Alert severity="error">
-            {data ? (
-              <p>
-                {data.message.detail} - {STRING_ALERT.CHECK}
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-slate-400/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-600/5 rounded-full blur-3xl"></div>
+        </div>
+
+        {/* Alert messages */}
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-md px-4">
+          {status === "error" && (
+            <Alert severity="error" sx={{ borderRadius: "8px" }}>
+              {data ? (
+                <p>
+                  {data.message.detail} - {STRING_ALERT.CHECK}
+                </p>
+              ) : (
+                <p>{STRING_ALERT.DEFAULT}</p>
+              )}
+            </Alert>
+          )}
+          {info.msg && (
+            <Alert severity={info.type} sx={{ borderRadius: "8px", mt: 1 }}>
+              <p>{info.msg}</p>
+            </Alert>
+          )}
+        </div>
+
+        {/* Login Card */}
+        <div className="relative z-10 w-full max-w-md mx-4">
+          <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl px-8 py-10 border border-white/20">
+            {/* Brand Header */}
+            <div className="flex flex-col items-center mb-8">
+              <div className="flex items-center gap-0.5 mb-2">
+                <span className="text-2xl font-bold tracking-tight text-slate-900">ANCHORP</span>
+                <img src={circle} className="w-5 h-5 mt-0.5" />
+                <span className="text-2xl font-bold tracking-tight text-slate-900">INT</span>
+              </div>
+              <p className="text-sm text-slate-400 font-medium">
+                Travel Management Platform
               </p>
-            ) : (
-              <p>{STRING_ALERT.DEFAULT}</p>
-            )}
-          </Alert>
-        )}
-        {info && (
-          <Alert severity={info.type}>
-            <p>{info.msg}</p>
-          </Alert>
-        )}
-        <img src={quote} alt="Travel Buddy" />
-        <div className="bg-[rgb(255,255,255)] shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] backdrop-blur-[8.5px] rounded-xl text-black mx-4 px-2 md:px-4 py-6">
-          <div className="flex justify-center items-center mb-2">
-            <p className="font-normal text-[17px] mt-[3px]  leading-4">
-              {STRING_LOGIN.TEXT_GREET}
-            </p>
-            <div className="flex mx-3">
-              <h1>{STRING_LOGIN.TEXT_ANCHORP}</h1>
-              <img src={circle} className="w-5" />
-              <h1>{STRING_LOGIN.TEXT_INT}</h1>
             </div>
-            <WavingHandIcon className="mb-0.5 text-skin" />
-          </div>
-          {!token ? (
-            <div>
-              {!isForgot ? (
-                showOTP ? (
-                  <>{renderOTPInput()}{renderGetDetailsInput()}</>
-                )  : (
+
+            {!token ? (
+              <div>
+                {!isForgot ? (
+                  showOTP ? (
+                    <>{renderOTPInput()}{renderGetDetailsInput()}</>
+                  )  : (
+                    <div>
+                      <p className="text-sm text-slate-500 mb-6">
+                        {STRING_LOGIN.TEXT_HELPER_SIGN_IN}
+                      </p>
+                      <div>
+                        <Stack spacing={2.5}>
+                          <TextField
+                            label="Email Address"
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <PersonIcon sx={{ color: "#94A3B8" }} />
+                                </InputAdornment>
+                              ),
+                            }}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            error={errors.email}
+                            helperText={errors.email && errors.email}
+                            size="small"
+                          />
+                          {!isCoordinator && (
+                            <TextField
+                              label="Password"
+                              type="password"
+                              InputProps={{
+                                startAdornment: (
+                                  <InputAdornment position="start">
+                                    <LockIcon sx={{ color: "#94A3B8" }} />
+                                  </InputAdornment>
+                                ),
+                              }}
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              error={errors.password}
+                              helperText={errors.password && errors.password}
+                              size="small"
+                            />
+                          )}
+                        </Stack>
+                      </div>
+                      <div className="mt-4 flex items-center gap-4">
+                        <FormGroup>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                size="small"
+                                checked={isVendor}
+                                onChange={(e) => {
+                                  setIsVendor(e.target.checked);
+                                  setIsCoordinator(false);
+                                }}
+                              />
+                            }
+                            label={
+                              <span className="text-sm text-slate-600">
+                                {STRING_LOGIN.LABEL_VENDOR}
+                              </span>
+                            }
+                          />
+                        </FormGroup>
+                        <FormGroup>
+                          <FormControlLabel
+                            control={
+                              <Checkbox
+                                size="small"
+                                disabled={isVendor}
+                                checked={isCoordinator}
+                                onChange={(e) =>
+                                  setIsCoordinator(e.target.checked)
+                                }
+                              />
+                            }
+                            label={
+                              <span className={`text-sm ${isVendor ? "text-slate-300" : "text-slate-600"}`}>
+                                {STRING_LOGIN.LABEL_COORDINATOR}
+                              </span>
+                            }
+                          />
+                        </FormGroup>
+                      </div>
+                      <div className="mt-6">
+                        <LoadingButton
+                          variant="contained"
+                          className="w-full"
+                          onClick={handleClick}
+                          loading={status === "Loading"}
+                          sx={{
+                            backgroundColor: "#334155",
+                            padding: "10px 0",
+                            fontSize: "0.95rem",
+                            fontWeight: 500,
+                            borderRadius: "8px",
+                            "&:hover": { backgroundColor: "#475569" },
+                          }}
+                        >
+                          <span>{STRING_LOGIN.LABEL_SIGN_IN}</span>
+                        </LoadingButton>
+                      </div>
+                      {!isCoordinator && (
+                        <div className="mt-4 text-center">
+                          <Link
+                            component="button"
+                            variant="inherit"
+                            onClick={() => {
+                              setIsForgot(true);
+                              setEmail("");
+                              setPassword("");
+                            }}
+                            sx={{ 
+                              color: "#64748B", 
+                              fontSize: "0.85rem",
+                              textDecoration: "none",
+                              "&:hover": { color: "#334155" },
+                            }}
+                          >
+                            Forgot Password?
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                  )
+                ) : (
                   <div>
-                    <p className="text-sm font-normal mt-1">
-                      {STRING_LOGIN.TEXT_HELPER_SIGN_IN}
-                    </p>
+                    <div>
+                      <IconButton
+                        size="small"
+                        color="inherit"
+                        onClick={() => {
+                          setIsForgot(false);
+                          setEmail("");
+                        }}
+                        sx={{ color: "#475569" }}
+                      >
+                        <ArrowBackIcon fontSize="small" />
+                        <span className="ml-1 text-sm font-medium">Back</span>
+                      </IconButton>
+                    </div>
+
+                    <div className="mt-4">
+                      <Typography fontSize={14} className="text-slate-500">
+                        Enter your email address and role to receive a password reset link
+                      </Typography>
+                    </div>
                     <div className="mt-5">
-                      <Stack spacing={2}>
+                      <Stack spacing={2.5} className="mt-3">
                         <TextField
-                          label="User Name"
+                          label="Email Address"
                           InputProps={{
                             startAdornment: (
                               <InputAdornment position="start">
-                                <PersonIcon />
+                                <PersonIcon sx={{ color: "#94A3B8" }} />
                               </InputAdornment>
                             ),
                           }}
@@ -448,221 +621,125 @@ function Login() {
                           onChange={(e) => setEmail(e.target.value)}
                           error={errors.email}
                           helperText={errors.email && errors.email}
+                          size="small"
                         />
-                        {!isCoordinator && (
-                          <TextField
-                            label="Password"
-                            type="password"
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  <LockIcon />
-                                </InputAdornment>
-                              ),
+                        <FormControl>
+                          <FormLabel id="role-label" sx={{ color: "#475569", fontSize: "0.875rem", fontWeight: 500 }}>Role</FormLabel>
+                          <RadioGroup
+                            row
+                            aria-labelledby="role-label"
+                            defaultValue="organizer"
+                            name="radio-buttons-group"
+                            onChange={(e) => setRole(e.target.value)}
+                          >
+                            <FormControlLabel
+                              value="organizer"
+                              control={<Radio size="small" />}
+                              label={<span className="text-sm text-slate-600">Organizer</span>}
+                            />
+                            <FormControlLabel
+                              value="vendor"
+                              control={<Radio size="small" />}
+                              label={<span className="text-sm text-slate-600">Vendor</span>}
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                        <div className="mt-5">
+                          <LoadingButton
+                            variant="contained"
+                            className="w-full"
+                            onClick={handlePasswordReset}
+                            loading={status === "Loading"}
+                            sx={{
+                              backgroundColor: "#334155",
+                              padding: "10px 0",
+                              fontWeight: 500,
+                              borderRadius: "8px",
+                              "&:hover": { backgroundColor: "#475569" },
                             }}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            error={errors.password}
-                            helperText={errors.password && errors.password}
-                          />
-                        )}
+                          >
+                            <span>{"Request password reset"}</span>
+                          </LoadingButton>
+                        </div>
                       </Stack>
                     </div>
-                    <div className=" mt-3">
-                      <FormGroup>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={isVendor}
-                              onChange={(e) => {
-                                setIsVendor(e.target.checked);
-                                setIsCoordinator(false);
-                              }}
-                            />
-                          }
-                          label={STRING_LOGIN.LABEL_VENDOR}
-                        />
-                      </FormGroup>
-                    </div>
-                    <div
-                      className={`mt-1 ${
-                        isVendor ? "opacity-30" : "opacity-100"
-                      }`}
-                    >
-                      <FormGroup>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              disabled={isVendor}
-                              checked={isCoordinator}
-                              onChange={(e) =>
-                                setIsCoordinator(e.target.checked)
-                              }
-                            />
-                          }
-                          label={STRING_LOGIN.LABEL_COORDINATOR}
-                        />
-                      </FormGroup>
-                    </div>
-                    <div className="mt-5">
-                      <LoadingButton
-                        variant="contained"
-                        className="w-full p-1"
-                        onClick={handleClick}
-                        loading={status === "Loading"}
-                      >
-                        <span>{STRING_LOGIN.LABEL_SIGN_IN}</span>
-                      </LoadingButton>
-                    </div>
-                    {!isCoordinator && (
-                      <div className="mt-3">
-                        <Link
-                          component="button"
-                          variant="inherit"
-                          onClick={() => {
-                            setIsForgot(true);
-                            setEmail("");
-                            setPassword("");
-                          }}
-                        >
-                          Forgot Password?
-                        </Link>
-                      </div>
-                    )}
                   </div>
-                )
-              ) : (
-                <div>
-                  <div>
-                    <IconButton
-                      size="small"
-                      color="inherit"
-                      onClick={() => {
-                        setIsForgot(false);
-                        setEmail("");
-                      }}
-                    >
-                      <ArrowBackIcon />
-                      Back
-                    </IconButton>
-                  </div>
-
-                  <div className="mt-4">
-                    <span>
-                      Please enter the email-id and role to send the
-                      verification link
-                    </span>
-                  </div>
-                  <div className="mt-5">
-                    <Stack spacing={2} className="mt-3">
-                      <TextField
-                        label="Enter email ID"
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <PersonIcon />
-                            </InputAdornment>
-                          ),
-                        }}
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        error={errors.email}
-                        helperText={errors.email && errors.email}
-                      />
-                      <FormControl>
-                        <FormLabel id="role-label">Role</FormLabel>
-                        <RadioGroup
-                          row
-                          aria-labelledby="role-label"
-                          defaultValue="organizer"
-                          name="radio-buttons-group"
-                          onChange={(e) => setRole(e.target.value)}
-                        >
-                          <FormControlLabel
-                            value="organizer"
-                            control={<Radio />}
-                            label="Organizer"
-                          />
-                          <FormControlLabel
-                            value="vendor"
-                            control={<Radio />}
-                            label="Vendor"
-                          />
-                        </RadioGroup>
-                      </FormControl>
-                      <div className="mt-5">
-                        <LoadingButton
-                          variant="contained"
-                          className="w-full p-1"
-                          onClick={handlePasswordReset}
-                          loading={status === "Loading"}
-                        >
-                          <span>{"Request password reset"}</span>
-                        </LoadingButton>
-                      </div>
-                    </Stack>
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : isValidToken ? (
-            <div className="min-w-[500px] min-h-[300px]">
-              <Stack spacing={2}>
-                <span>Enter new password and confirm password</span>
-                <TextField
-                  label="Password"
-                  type="password"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LockIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  error={errors.password}
-                  helperText={errors.password && errors.password}
-                />
-                <TextField
-                  label="Confirm password"
-                  type="password"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LockIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  error={errors.confirmPassword}
-                  helperText={errors.confirmPassword && errors.confirmPassword}
-                />
-              </Stack>
-              <div className="mt-8">
-                <LoadingButton
-                  variant="contained"
-                  className="w-full p-1"
-                  onClick={handleConfirmPassword}
-                  loading={status === "Loading"}
-                >
-                  <span>{"Reset Password"}</span>
-                </LoadingButton>
+                )}
               </div>
-            </div>
-          ) : (
-            <div className="min-w-[500px] min-h-[300px] flex flex-col gap-4 items-center justify-center ">
-              <Typography fontSize={20}>
-                The password confirmation link has expired!
-              </Typography>
-              <Typography fontSize={18}>
-                Please initiate forgot password request again.
-              </Typography>
-            </div>
-          )}
+            ) : isValidToken ? (
+              <div className="min-w-[400px] min-h-[250px]">
+                <Typography fontSize={14} className="text-slate-500 mb-4">
+                  Enter your new password below
+                </Typography>
+                <Stack spacing={2.5}>
+                  <TextField
+                    label="New Password"
+                    type="password"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LockIcon sx={{ color: "#94A3B8" }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    error={errors.password}
+                    helperText={errors.password && errors.password}
+                    size="small"
+                  />
+                  <TextField
+                    label="Confirm Password"
+                    type="password"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LockIcon sx={{ color: "#94A3B8" }} />
+                        </InputAdornment>
+                      ),
+                    }}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    error={errors.confirmPassword}
+                    helperText={errors.confirmPassword && errors.confirmPassword}
+                    size="small"
+                  />
+                </Stack>
+                <div className="mt-6">
+                  <LoadingButton
+                    variant="contained"
+                    className="w-full"
+                    onClick={handleConfirmPassword}
+                    loading={status === "Loading"}
+                    sx={{
+                      backgroundColor: "#334155",
+                      padding: "10px 0",
+                      fontWeight: 500,
+                      borderRadius: "8px",
+                      "&:hover": { backgroundColor: "#475569" },
+                    }}
+                  >
+                    <span>{"Reset Password"}</span>
+                  </LoadingButton>
+                </div>
+              </div>
+            ) : (
+              <div className="min-w-[400px] min-h-[200px] flex flex-col gap-4 items-center justify-center">
+                <Typography fontSize={18} fontWeight={500} className="text-slate-800 text-center">
+                  The password reset link has expired
+                </Typography>
+                <Typography fontSize={14} className="text-slate-400 text-center">
+                  Please initiate a forgot password request again.
+                </Typography>
+              </div>
+            )}
+          </div>
+          
+          {/* Powered by footer */}
+          <div className="flex justify-center mt-6">
+            <img src={powered} className="h-5 opacity-50" />
+          </div>
         </div>
-        <img src={powered} />
       </div>
     </>
   );

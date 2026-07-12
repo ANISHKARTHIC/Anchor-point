@@ -10,8 +10,11 @@ import {
   DialogContent,
   TextField,
   InputAdornment,
+  Typography,
 } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 
 const DateSelector = ({
   open,
@@ -48,7 +51,7 @@ const DateSelector = ({
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
       <TextField
-        placeholder="DD-MM-YYYY"
+        placeholder="DD-MM-YYYY (Multi-select)"
         disabled={disabled}
         value={
           localSelectedDates && localSelectedDates.length > 0
@@ -62,18 +65,76 @@ const DateSelector = ({
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-              <CalendarMonthIcon />
+              <CalendarMonthIcon sx={{ color: "#64748B" }} />
             </InputAdornment>
           ),
+          sx: {
+            cursor: "pointer",
+            backgroundColor: "#FFFFFF",
+          }
+        }}
+        sx={{
+          "& .MuiInputBase-input": {
+            cursor: "pointer",
+            color: "#334155",
+            fontWeight: 500,
+          }
         }}
       />
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogContent>
+      <Dialog 
+        open={open} 
+        onClose={onClose} 
+        fullWidth 
+        maxWidth="xs"
+        PaperProps={{
+          sx: {
+            borderRadius: "16px",
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+            overflow: "hidden"
+          }
+        }}
+      >
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          px: 3, 
+          py: 2, 
+          borderBottom: '1px solid #E2E8F0',
+          backgroundColor: '#F8FAFC'
+        }}>
+          <Typography sx={{ fontWeight: 600, color: '#0F172A', fontSize: '1.1rem' }}>
+            Select Dates
+          </Typography>
+          <IconButton onClick={onClose} size="small" sx={{ color: '#64748B' }}>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </Box>
+        <DialogContent sx={{ p: 0 }}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <StaticDatePicker
+              displayStaticWrapperAs="desktop"
               disableFuture={false}
               value={null}
               onChange={handleDateToggle}
+              sx={{
+                width: '100%',
+                "& .MuiPickersCalendarHeader-root": {
+                  marginTop: "16px",
+                  paddingLeft: "24px",
+                  paddingRight: "16px"
+                },
+                "& .MuiPickersCalendarHeader-label": {
+                  fontWeight: 600,
+                  color: "#1E293B"
+                },
+                "& .MuiDayCalendar-header": {
+                  "& .MuiDayCalendar-weekDayLabel": {
+                    color: "#64748B",
+                    fontWeight: 500
+                  }
+                }
+              }}
               slots={{
                 actionBar: () => null,
                 toolbar: () => null,
@@ -90,17 +151,19 @@ const DateSelector = ({
                         height: 36,
                         borderRadius: "50%",
                         backgroundColor: isSelected
-                          ? "primary.main"
+                          ? "#059669" // Emerald 600
                           : "transparent",
-                        color: isSelected ? "white" : "inherit",
+                        color: isSelected ? "#FFFFFF" : "#334155", // Slate 700
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         cursor: "pointer",
+                        fontWeight: isSelected ? 600 : 500,
+                        transition: "all 0.2s ease",
                         "&:hover": {
                           backgroundColor: isSelected
-                            ? "primary.dark"
-                            : "primary.light",
+                            ? "#047857" // Emerald 700
+                            : "#F1F5F9", // Slate 100
                         },
                       }}
                     >
@@ -111,23 +174,51 @@ const DateSelector = ({
               }}
             />
           </LocalizationProvider>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                setLocalSelectedDates([]);
-                setSelectedDates([]);
-                onSelectDates([]);
-                onClose();
-              }}
-              color="primary"
-              variant="outlined"
-            >
-              Clear
-            </Button>
-            <Button onClick={onClose} color="primary" variant="contained">
-              OK
-            </Button>
-          </DialogActions>
+          <Box sx={{ 
+            p: 3, 
+            pt: 1,
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center' 
+          }}>
+            <Typography variant="body2" sx={{ color: '#64748B', fontWeight: 500 }}>
+              {localSelectedDates.length} date{localSelectedDates.length !== 1 ? 's' : ''} selected
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 1.5 }}>
+              <Button
+                onClick={() => {
+                  setLocalSelectedDates([]);
+                  setSelectedDates([]);
+                  onSelectDates([]);
+                  onClose();
+                }}
+                sx={{
+                  color: "#64748B",
+                  borderColor: "#E2E8F0",
+                  "&:hover": {
+                    backgroundColor: "#F8FAFC",
+                    borderColor: "#CBD5E1",
+                  }
+                }}
+                variant="outlined"
+                size="small"
+              >
+                Clear
+              </Button>
+              <Button 
+                onClick={onClose} 
+                variant="contained" 
+                size="small"
+                sx={{
+                  backgroundColor: "#334155",
+                  "&:hover": { backgroundColor: "#475569" },
+                  boxShadow: "none"
+                }}
+              >
+                Done
+              </Button>
+            </Box>
+          </Box>
         </DialogContent>
       </Dialog>
     </Box>

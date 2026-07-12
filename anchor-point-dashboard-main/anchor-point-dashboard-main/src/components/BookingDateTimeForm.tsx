@@ -319,7 +319,8 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
           <Box
             sx={{
               display: "flex",
-              backgroundColor: "lightgray",
+              backgroundColor: "#FFFFFF",
+              borderBottom: "1px solid #E2E8F0",
               justifyContent: "space-between",
               alignItems: "center",
               paddingRight: 1,
@@ -330,7 +331,7 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
           >
             <CardHeader
               title={
-                <div className="text-base font-bold">
+                <div className="text-lg font-semibold text-slate-800">
                   {STRING_BOOKINGS.BOOKING_HEADER}
                 </div>
               }
@@ -338,7 +339,7 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                 justifyContent: "center",
                 alignItems: "center",
                 display: "flex",
-                backgroundColor: "lightgray",
+                backgroundColor: "#FFFFFF",
               }}
             />
 
@@ -348,7 +349,13 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                 size="small"
                 disabled={isFormDisabled()}
                 type="submit"
-                sx={{ padding: 1 }}
+                sx={{ 
+                  padding: "6px 16px",
+                  backgroundColor: "#334155",
+                  textTransform: "none",
+                  fontWeight: 500,
+                  "&:hover": { backgroundColor: "#475569" }
+                }}
               >
                 Continue
               </Button>
@@ -356,15 +363,15 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
           </Box>
           <Divider
             sx={{
-              borderColor: "grey.500",
+              borderColor: "#E2E8F0",
               width: "100%",
             }}
           />
           <CardContent style={{ overflowY: "auto", flex: 1 }}>
             <div className="flex flex-col gap-1.5 ">
               {userRole != "coordinator" && (
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                  <div className="text-sm font-bold ">
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+                  <div className="text-sm font-semibold text-slate-800">
                     {STRING_BOOKINGS.COORDINATOR}{" "}
                     <span className="text-red-500">*</span>
                   </div>
@@ -424,7 +431,7 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                   alignItems: "center",
                 }}
               >
-                <div className="font-bold text-sm">
+                <div className="text-sm font-semibold text-slate-800">
                   <FormGroup>
                     <FormControlLabel
                       control={
@@ -448,8 +455,8 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                 </Tooltip>
               </Box>
 
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                <div className="font-bold text-sm">
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+                <div className="text-sm font-semibold text-slate-800">
                   {STRING_BOOKINGS.DATE} <span className="text-red-500">*</span>
                 </div>
                 <Controller
@@ -465,14 +472,15 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                             setSelectedDates([value]);
                             setValue("date",value)
                           }}
-                          format="DD-MM-YYYY"
                           sx={{
-                            "& .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input":
-                            {
-                              padding: "10px",
-                            },
+                            width: "100%",
+                            "& .MuiInputBase-root": {
+                              borderRadius: "8px",
+                              backgroundColor: "#FFFFFF",
+                            }
                           }}
                           disabled={checkDisable}
+                          slotProps={{ textField: { size: 'small' } }}
                         />
                       </LocalizationProvider>
                       :
@@ -490,8 +498,8 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                 />
               </Box>
 
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                <div className="font-bold text-sm">
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+                <div className="text-sm font-semibold text-slate-800">
                   {STRING_BOOKINGS.TIME} <span className="text-red-500">*</span>
                 </div>
                 <Controller
@@ -524,11 +532,13 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                               seconds: renderTimeViewClock,
                             }}
                             sx={{
-                              "& .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input":
-                              {
-                                padding: "10px",
-                              },
+                              width: "100%",
+                              "& .MuiInputBase-root": {
+                                borderRadius: "8px",
+                                backgroundColor: "#FFFFFF",
+                              }
                             }}
+                            slotProps={{ textField: { size: 'small' } }}
                           // minTime={
                           //   selectedDates
                           //     ? // &&
@@ -547,8 +557,8 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                 />
               </Box>
 
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                <div className="font-bold text-sm">
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+                <div className="text-sm font-semibold text-slate-800">
                   {STRING_BOOKINGS.CABTYPE}{" "}
                   <span className="text-red-500">*</span>
                 </div>
@@ -583,8 +593,8 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                 />
               </Box>
 
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                <div className="font-bold text-sm">
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+                <div className="text-sm font-semibold text-slate-800">
                   {STRING_BOOKINGS.COSTCENTER}{" "}
                   <span className="text-red-500">*</span>
                 </div>
@@ -618,8 +628,8 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                 />
               </Box>
 
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                <div className="font-bold text-sm">
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+                <div className="text-sm font-semibold text-slate-800">
                   {STRING_BOOKINGS.PO_NUMBER}
                   <span className="text-red-500">*</span>
                 </div>
@@ -641,8 +651,8 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                   )}
                 />
               </Box>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                <div className="font-bold text-sm">
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+                <div className="text-sm font-semibold text-slate-800">
                   {STRING_BOOKINGS.CITY}{" "}
                   <span className="text-red-500">*</span>
                 </div>
@@ -675,8 +685,8 @@ const BookingDateTimeForm: React.FC<BookingDateTimeProps> = ({
                   )}
                 />
               </Box>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                <div className="font-bold text-sm">
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+                <div className="text-sm font-semibold text-slate-800">
                   {STRING_BOOKINGS.DESCRIPTION}
                 </div>
                 <Controller

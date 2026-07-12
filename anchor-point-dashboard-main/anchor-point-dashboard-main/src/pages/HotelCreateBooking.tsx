@@ -42,6 +42,7 @@ function HotelCreateBooking() {
     no_of_rooms: 0,
     check_in: "",
     check_out: "",
+    po_number: "",
     guests: [],
     description: ""
   });
@@ -222,8 +223,8 @@ function HotelCreateBooking() {
   }, [prefilledBookingData]);
 
   return (
-    <div className="h-[calc(100vh-64px)] flex flex-col w-full bg-appBg p-3">
-      <div className="text-base font-bold">
+    <div className="h-[calc(100vh-64px)] flex flex-col w-full bg-appBg p-6">
+      <div className="text-lg font-semibold text-slate-800">
       {prefilledBookingData
           ? `${STRING_BOOKINGS.BOOKINGEDIT_HEADER} - ${prefilledBookingData.bid}`
           : STRING_BOOKINGS.BOOKINGMAIN_HEADER}
@@ -231,8 +232,28 @@ function HotelCreateBooking() {
 
       {openToast && <Toast message={toastMessage} toastType={toastType} />}
 
-      <div className="w-full flex flex-col md:flex-row justify-between mt-1 mb-1">
-        <Stepper activeStep={activeStep} sx={{ width: "80%" }}>
+      <div className="w-full flex flex-col md:flex-row justify-between mt-4 mb-2">
+        <Stepper activeStep={activeStep} sx={{
+          width: "80%",
+          '& .MuiStepConnector-line': {
+            borderColor: '#E2E8F0',
+          },
+          '& .MuiStepConnector-root.Mui-active .MuiStepConnector-line': {
+            borderColor: '#334155',
+          },
+          '& .MuiStepConnector-root.Mui-completed .MuiStepConnector-line': {
+            borderColor: '#334155',
+          },
+          '& .MuiStepIcon-root': {
+            color: '#E2E8F0',
+          },
+          '& .MuiStepIcon-root.Mui-active': {
+            color: '#334155',
+          },
+          '& .MuiStepIcon-root.Mui-completed': {
+            color: '#334155',
+          },
+        }}>
           {steps.map((label) => {
             const stepProps: { completed?: boolean } = {};
             const labelProps: {
@@ -242,18 +263,26 @@ function HotelCreateBooking() {
             return (
               <Step key={label} {...stepProps}>
                 <StepLabel {...labelProps}>
-                  <div className="hidden text-base md:block font-thin">{label}</div>
+                  <div className="hidden text-sm md:block font-medium text-slate-600">{label}</div>
                 </StepLabel>
               </Step>
             );
           })}
         </Stepper>
-        <div className="flex flex-row justify-center md:justify-end items-center md:items-end m-5">
+        <div className="flex flex-row justify-center md:justify-end items-center md:items-end m-5 gap-2">
           {activeStep >= 0 && !prefilledBookingData && (
             <Button
               variant="contained"
               onClick={handleReset}
-              sx={{ mr: 1 }}
+              sx={{
+                mr: 1,
+                backgroundColor: '#334155',
+                '&:hover': { backgroundColor: '#475569' },
+                textTransform: 'none',
+                borderRadius: '8px',
+                boxShadow: 'none',
+                '&:active': { boxShadow: 'none' },
+              }}
               disabled={activeStep === 0}
             >
               Reset
@@ -267,7 +296,15 @@ function HotelCreateBooking() {
                 dispatch(clearBooking());
                 navigate(`/home/booking/${prefilledBookingData.bid}`);
               }}
-              sx={{ mr: 1 }}
+              sx={{
+                mr: 1,
+                backgroundColor: '#334155',
+                '&:hover': { backgroundColor: '#475569' },
+                textTransform: 'none',
+                borderRadius: '8px',
+                boxShadow: 'none',
+                '&:active': { boxShadow: 'none' },
+              }}
               disabled={activeStep === 0}
             >
               Cancel
@@ -278,6 +315,14 @@ function HotelCreateBooking() {
             onClick={bookingData.bid ? handleEditFinish : handleFinish}
             variant="contained"
             disabled={!allGuestsValid}
+            sx={{
+              backgroundColor: '#334155',
+              '&:hover': { backgroundColor: '#475569' },
+              textTransform: 'none',
+              borderRadius: '8px',
+              boxShadow: 'none',
+              '&:active': { boxShadow: 'none' },
+            }}
           >
             Finish
           </Button>
@@ -289,7 +334,7 @@ function HotelCreateBooking() {
           </Backdrop>
         </div>
       </div>
-        <div className="flex flex-col md:flex-row justify-between w-full bg-appBg pt-2 lg:pt-0">
+        <div className="flex flex-col md:flex-row justify-between w-full bg-white rounded-xl border border-slate-200 p-4 mt-2" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
           <HotelBookingInfo
             bookingData={bookingData}
             onClick={handleNext}

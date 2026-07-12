@@ -85,6 +85,7 @@ class HotelBookingCreate(BaseModel):
     room_type: Optional[str] = ""
     related_booking_id:  Optional[str] = ""
     cc_recipients:  List[str] = []
+    po_number: Optional[str] = ""
     description: Optional[Annotated[str, StringConstraints(strip_whitespace=True)]] = None
     pickup: Optional[dict] = {}
     drop: Optional[dict] = {}
@@ -124,6 +125,8 @@ class HotelInvoiceModel(BaseModel):
     invoice_no: Optional[str] = None
     description: Optional[str] = ""
     po_number: Optional[str] = ""
+    hotel_name: Optional[str] = None
+    supporting_document_url: Optional[str] = None
     taxable_amount: float
     non_taxable_amount: float
     cgst_amount: float
